@@ -5,8 +5,8 @@ on:
       - main
 
 defaults:
-        run:
-          working-directory: ./ui
+  run:
+    working-directory: ./ui
 
 jobs:
   build:    
