@@ -1,11 +1,14 @@
 import json
 import random
 
-from flask import Flask, Response, request
+
+from flask import Flask, Response, request, jsonify
+from flask_cors import CORS
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers import pipeline
 
 app = Flask(__name__)
+CORS(app, resources={r"/generate": {"origins": "*"}})
 
 print("\nLoading models...")
 
@@ -31,7 +34,7 @@ people = {
 }
 
 
-@app.get("/generate")
+@app.post("/generate")
 def hello_world():
     body = request.json
     prompt = body.get("prompt")
@@ -58,8 +61,9 @@ def hello_world():
     else:  # add first word from new text
         prompt += ' ' + new_text.split(' ')[1]
 
-    return Response(json.dumps({"generated_text": prompt}),
-                    mimetype="application/json", status=200)
+    response = jsonify({"generated_text": prompt})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 # enables flask app to run using "python3 app.py"
