@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const Feed = () => {
-  const users = ["donald", "elon", "joe", "ts", "buddha"];
+  const users = ["donald", "elon", "joe", "shakespeare", "buddha"];
   const [prompt, setPrompt] = useState("Tell me a funny story.");
   const [messages, setMessages] = useState([]);
   const [index, setIndex] = useState(0);

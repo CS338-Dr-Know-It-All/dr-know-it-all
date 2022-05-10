@@ -17,8 +17,8 @@ donaldtokenizer = AutoTokenizer.from_pretrained("huggingtweets/realdonaldtrump")
 donaldmodel = AutoModelForCausalLM.from_pretrained("huggingtweets/realdonaldtrump")
 elontokenizer = AutoTokenizer.from_pretrained("huggingtweets/elonmusk")
 elonmodel = AutoModelForCausalLM.from_pretrained("huggingtweets/elonmusk")
-tstokenizer = AutoTokenizer.from_pretrained("huggingtweets/tswiftlyricsbot")
-tsmodel = AutoModelForCausalLM.from_pretrained("huggingtweets/tswiftlyricsbot")
+shakespearetokenizer = AutoTokenizer.from_pretrained("huggingtweets/wwm_shakespeare")
+shakespearemodel = AutoModelForCausalLM.from_pretrained("huggingtweets/wwm_shakespeare")
 buddhatokenizer = AutoTokenizer.from_pretrained("huggingtweets/_buddha_quotes")
 buddhamodel = AutoModelForCausalLM.from_pretrained("huggingtweets/_buddha_quotes")
 
@@ -28,7 +28,7 @@ people = {
     "joe": (joemodel, joetokenizer),
     "donald": (donaldmodel, donaldtokenizer),
     "elon": (elonmodel, elontokenizer),
-    "ts": (tsmodel, tstokenizer),
+    "shakespeare": (shakespearemodel, shakespearetokenizer),
     "buddha": (buddhamodel, buddhatokenizer)
 }
 
