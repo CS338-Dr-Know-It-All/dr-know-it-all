@@ -2,10 +2,12 @@ import json
 import random
 
 from flask import Flask, Response, request
+from flask_cors import CORS
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers import pipeline
 
 app = Flask(__name__)
+CORS(app)
 
 print("\nLoading models...")
 
@@ -31,7 +33,7 @@ people = {
 }
 
 
-@app.get("/generate")
+@app.post("/generate")
 def hello_world():
     body = request.json
     prompt = body.get("prompt")
