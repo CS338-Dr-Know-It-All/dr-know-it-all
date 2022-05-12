@@ -53,13 +53,30 @@ def hello_world():
                          tokenizer=tokenizer, max_length=max(15, len(prompt)))
     text = generator(prompt, num_return_sequences=5)
 
-    rand_num = random.randint(0, 4)
-    new_text = text[rand_num]['generated_text'].split(prompt)[1]
-    if len(new_text) <= 1:  # if last token (punctuation or stop)
-        prompt += new_text
-    else:  # add first word from new text
-        prompt += ' ' + new_text.split(' ')[1]
-
+    r = [0] * len(text)
+    for i in range(len(text)):
+        r[i] = len(text[i]['generated_text'])
+    longest_response = text[r.index(max(r))]['generated_text']
+    b = longest_response.split(prompt)
+    new_word = b[1].split(' ')
+    if len(new_word) > 1 and new_word[0] == '' or new_word[0] == '\n':
+        prompt = prompt + ' ' + new_word[1]
+    elif new_word[0] != '' and new_word[0] != '\n':
+        prompt = prompt + new_word[0]
+    else:
+        text = generator(prompt.split(' ')[-1], num_return_sequences=5)
+        r = [0] * len(text)
+        for i in range(len(text)):
+            r[i] = len(text[i]['generated_text'])
+        longest_response = text[r.index(max(r))]['generated_text']
+        b = longest_response.split(prompt)
+        new_word = b[1].split(' ')
+        if new_word[0] == '':
+            prompt = prompt + ' ' + new_word[1]
+        else:
+            prompt = prompt + ' ' + new_word[0]
+        
+    
     return Response(json.dumps({"generated_text": prompt}),
                     mimetype="application/json", status=200)
 
