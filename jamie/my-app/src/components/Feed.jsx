@@ -1,10 +1,15 @@
 import { useState } from "react";
+import Message from './Message.jsx';
 
-const Feed = () => {
+import { Button } from 'react-bootstrap';
+
+const Feed = ({prompt, setPrompt}) => {
   const users = ["donald", "elon", "joe", "shakespeare", "buddha"];
-  const [prompt, setPrompt] = useState("Tell me a funny story.");
+  //const [prompt, setPrompt] = useState("Tell me a funny story.");
   const [messages, setMessages] = useState([]);
   const [index, setIndex] = useState(0);
+  //my adds
+
 
   const changeIndex = () => {
     const newIndex = index < 4 ? index + 1 : 0;
@@ -35,13 +40,24 @@ const Feed = () => {
 
   return (
     <div>
-      <div>{prompt}</div>
-      <button onClick={addWord}>Continue Story</button>
-      {messages.map(({ person, word }) => (
-        <div>
-          {person}: {word}
+      <div>
+        <div className="prompt">{prompt}</div>
+        <div className="continue-button">
+          <Button onClick={addWord} variant='outline-secondary'>Continue Story</Button>
         </div>
-      ))}
+      </div>
+      <div>
+        <div className="chat-feed">
+          {messages.map(({ person, word }) => (
+          <div className='individual-message-container'> 
+            <Message person = {person} word={word} className='message'></Message> 
+          </div>
+          /*<div>
+            //{person}: {word}
+          </div> */
+        ))}
+        </div>
+      </div>
     </div>
   );
 };
