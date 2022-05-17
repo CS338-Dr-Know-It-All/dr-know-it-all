@@ -1,17 +1,17 @@
 import { Card } from "react-bootstrap";
 
-const MyMessage = () => {
+const MyMessage = ({ person, word }) => {
     return (
         <Card
             className="message"
             style={{
                 float: "right",
-                marginRight: "18px",
+                marginRight: "48px",
                 color: "white",
                 backgroundColor: "#3B2A50",
             }}
         >
-            my message
+            {person}: {word}
         </Card>
     );
 };

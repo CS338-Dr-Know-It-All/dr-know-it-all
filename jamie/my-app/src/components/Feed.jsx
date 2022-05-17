@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Message from "./Message.jsx";
+import MyMessage from "./MyMessage.jsx";
 
 import { Button } from "react-bootstrap";
 
-const Feed = ({ prompt, setPrompt }) => {
+const Feed = ({ prompt, setPrompt, messages, setMessages }) => {
     const users = ["donald", "elon", "joe", "shakespeare", "buddha"];
-    const [messages, setMessages] = useState([]);
     const [index, setIndex] = useState(0);
 
     const changeIndex = () => {
@@ -51,11 +51,19 @@ const Feed = ({ prompt, setPrompt }) => {
                 <div className="chat-feed">
                     {messages.map(({ person, word }) => (
                         <div className="individual-message-container">
-                            <Message
-                                person={person}
-                                word={word}
-                                className="message"
-                            ></Message>
+                            {person !== "me" ? (
+                                <Message
+                                    person={person}
+                                    word={word}
+                                    className="message"
+                                />
+                            ) : (
+                                <MyMessage
+                                    person={person}
+                                    word={word}
+                                    className="message"
+                                />
+                            )}
                         </div>
                     ))}
                 </div>

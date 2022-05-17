@@ -6,6 +6,7 @@ import Feed from "./components/Feed";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
+    const [messages, setMessages] = useState([]);
     const [prompt, setPrompt] = useState("Tell me a funny story.");
     const [placeHolder, setPlaceHolder] = useState("");
 
@@ -15,11 +16,9 @@ const App = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("Handle Submit runs.");
-        console.log("placeHolder value is ", placeHolder);
         setPrompt(placeHolder);
+        setMessages([...messages, { person: "me", word: placeHolder }]);
         setPlaceHolder("");
-        console.log("prompt value is ", prompt);
     };
 
     return (
@@ -37,7 +36,12 @@ const App = () => {
                 }}
             >
                 {" "}
-                <Feed prompt={prompt} setPrompt={setPrompt} />{" "}
+                <Feed
+                    prompt={prompt}
+                    setPrompt={setPrompt}
+                    messages={messages}
+                    setMessages={setMessages}
+                />{" "}
             </div>
 
             <div className="message-form-container">
