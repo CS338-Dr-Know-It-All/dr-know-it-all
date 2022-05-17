@@ -38,7 +38,9 @@ const Feed = ({ prompt, setPrompt }) => {
     return (
         <div>
             <div>
-                <div className="prompt">{prompt}</div>
+                <div className="prompt" style={{ textAlign: "center" }}>
+                    {prompt}
+                </div>
                 <div className="continue-button">
                     <Button onClick={addWord} variant="outline-secondary">
                         Continue Story
