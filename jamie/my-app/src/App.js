@@ -30,7 +30,6 @@ const App = () => {
                 style={{
                     position: "fixed",
                     top: "60px",
-                    overflow: "scroll",
                     width: "100%",
                     height: "calc(100% - 200px)",
                 }}
