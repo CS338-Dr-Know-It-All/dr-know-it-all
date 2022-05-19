@@ -36,8 +36,8 @@ const Feed = ({ prompt, setPrompt, messages, setMessages }) => {
     };
 
     return (
-        <div>
-            <div>
+        <div id="body">
+            <nav id="header">
                 <div className="prompt" style={{ textAlign: "center" }}>
                     {prompt}
                 </div>
@@ -46,27 +46,25 @@ const Feed = ({ prompt, setPrompt, messages, setMessages }) => {
                         Continue Story
                     </Button>
                 </div>
-            </div>
-            <div>
-                <div className="chat-feed">
-                    {messages.map(({ person, word }) => (
-                        <div className="individual-message-container">
-                            {person !== "me" ? (
-                                <Message
-                                    person={person}
-                                    word={word}
-                                    className="message"
-                                />
-                            ) : (
-                                <MyMessage
-                                    person={person}
-                                    word={word}
-                                    className="message"
-                                />
-                            )}
-                        </div>
-                    ))}
-                </div>
+            </nav>
+            <div id="chat-feed">
+                {messages.map(({ person, word }) => (
+                     <div className="individual-message-container">
+                     {person !== "me" ? (
+                         <Message
+                             person={person}
+                             word={word}
+                             className="message"
+                         />
+                     ) : (
+                         <MyMessage
+                             person={person}
+                             word={word}
+                             className="message"
+                         />
+                     )}
+                    </div>
+                ))}
             </div>
         </div>
     );
