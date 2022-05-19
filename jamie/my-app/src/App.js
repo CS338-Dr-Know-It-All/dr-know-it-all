@@ -9,6 +9,7 @@ const App = () => {
     const [messages, setMessages] = useState([]);
     const [prompt, setPrompt] = useState("Tell me a funny story.");
     const [placeHolder, setPlaceHolder] = useState("");
+    const [inProgress, setInProgress] = useState(false);
 
     const handleChange = (event) => {
         setPlaceHolder(event.target.value);
@@ -40,6 +41,8 @@ const App = () => {
                     setPrompt={setPrompt}
                     messages={messages}
                     setMessages={setMessages}
+                    inProgress={inProgress}
+                    setInProgress={setInProgress}
                 />{" "}
             </div>
 
@@ -52,6 +55,7 @@ const App = () => {
                             onChange={handleChange}
                             onSubmit={handleSubmit}
                             placeholder="Type messsage here"
+                            disabled={inProgress}
                         />
                     </Form>
                 </Container>
