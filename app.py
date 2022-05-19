@@ -1,5 +1,4 @@
 import json
-import random
 
 from flask import Flask, Response, request
 from flask_cors import CORS
@@ -51,32 +50,31 @@ def hello_world():
     model, tokenizer = people[person]
     generator = pipeline('text-generation', model=model,
                          tokenizer=tokenizer, max_length=max(15, len(prompt)))
-    text = generator(prompt, num_return_sequences=5)
+    texts = generator(prompt, num_return_sequences=5)
 
-    r = [0] * len(text)
-    for i in range(len(text)):
-        r[i] = len(text[i]['generated_text'])
-    longest_response = text[r.index(max(r))]['generated_text']
-    b = longest_response.split(prompt)
-    new_word = b[1].split(' ')
-    if len(new_word) > 1 and new_word[0] == '' or new_word[0] == '\n':
-        prompt = prompt + ' ' + new_word[1]
-    elif new_word[0] != '' and new_word[0] != '\n':
-        prompt = prompt + new_word[0]
-    else:
-        text = generator(prompt.split(' ')[-1], num_return_sequences=5)
-        r = [0] * len(text)
-        for i in range(len(text)):
-            r[i] = len(text[i]['generated_text'])
-        longest_response = text[r.index(max(r))]['generated_text']
-        b = longest_response.split(prompt)
-        new_word = b[1].split(' ')
-        if new_word[0] == '':
-            prompt = prompt + ' ' + new_word[1]
-        else:
-            prompt = prompt + ' ' + new_word[0]
-        
-    
+    longest_response = max(texts, key=lambda text: len(text['generated_text']))['generated_text']
+    generated_text = longest_response.split(prompt, 1)  # begins with '' (empty string), then new text
+
+    if len(generated_text) > 1:  # if there is newly generated text
+        new_words = generated_text[1].split(' ')
+        if len(new_words) > 1 and new_words[0] == '' or new_words[0] == '\n':
+            prompt = prompt + ' ' + new_words[1]  # actual word
+        elif new_words[0] != '' and new_words[0] != '\n':
+            prompt = prompt + new_words[0]  # punctuation
+
+    else:  # re-generate text based on last word
+        last_word = prompt.split(' ')[-1]
+        texts = generator(last_word, num_return_sequences=5)
+        longest_response = max(texts, key=lambda text: len(text['generated_text']))['generated_text']
+        generated_text = longest_response.split(last_word, 1)  # begins with '' (empty string), then new text
+
+        if len(generated_text) > 1:  # if there is newly generated text
+            new_words = generated_text[1].split(' ')
+            if len(new_words) > 1 and new_words[0] == '' or new_words[0] == '\n':
+                prompt = prompt + ' ' + new_words[1]  # actual word
+            elif new_words[0] != '' and new_words[0] != '\n':
+                prompt = prompt + new_words[0]  # punctuation
+
     return Response(json.dumps({"generated_text": prompt}),
                     mimetype="application/json", status=200)
 

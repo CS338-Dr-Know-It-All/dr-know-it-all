@@ -1,38 +1,59 @@
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import Message from "./Message.jsx";
 import MyMessage from "./MyMessage.jsx";
 
 import { Button } from "react-bootstrap";
 
-const Feed = ({ prompt, setPrompt, messages, setMessages }) => {
+const Feed = ({
+    prompt,
+    setPrompt,
+    messages,
+    setMessages,
+    inProgress,
+    setInProgress,
+}) => {
     const users = ["donald", "elon", "joe", "shakespeare", "buddha"];
-    const [index, setIndex] = useState(0);
+    let index = useRef(0);
 
-    const changeIndex = () => {
-        const newIndex = index < 4 ? index + 1 : 0;
-        setIndex(newIndex);
+    useEffect(() => {
+        if (!inProgress || !prompt) {
+            return;
+        }
+        (async () => {
+            const res = await fetch("http://127.0.0.1:5000/generate", {
+                headers: { "Content-Type": "application/json" },
+                method: "POST",
+                mode: "cors",
+                body: JSON.stringify({
+                    prompt,
+                    person: users[index.current],
+                }),
+            });
+            const data = await res.json();
+            const text = data.generated_text;
+            const words = text.split(" ");
+            const newWord = words[words.length - 1];
+
+            if (text === prompt) {
+                stopStory();
+                return;
+            }
+
+            setPrompt(text);
+            setMessages([
+                ...messages,
+                { person: users[index.current], word: newWord },
+            ]);
+            index.current = index.current < 4 ? index.current + 1 : 0;
+        })();
+    }, [prompt, inProgress]);
+
+    const beginStory = async () => {
+        setInProgress(true);
     };
 
-    const addWord = async () => {
-        const res = await fetch("http://127.0.0.1:5000/generate", {
-            headers: { "Content-Type": "application/json" },
-            method: "POST",
-            mode: "cors",
-            body: JSON.stringify({
-                prompt,
-                person: users[index],
-            }),
-        });
-
-        const data = await res.json();
-        const text = data.generated_text;
-        const words = text.split(" ");
-        const newWord = words[words.length - 1];
-
-        setPrompt(text);
-        messages.push({ person: users[index], word: newWord });
-        setMessages(messages);
-        changeIndex();
+    const stopStory = () => {
+        setInProgress(false);
     };
 
     return (
@@ -42,9 +63,23 @@ const Feed = ({ prompt, setPrompt, messages, setMessages }) => {
                     {prompt}
                 </div>
                 <div className="continue-button">
-                    <Button onClick={addWord} variant="outline-secondary">
-                        Continue Story
+                    <Button
+                        onClick={beginStory}
+                        variant="outline-secondary"
+                        disabled={inProgress}
+                        style={{ margin: 5 }}
+                    >
+                        Generate Story
                     </Button>
+                    {inProgress && (
+                        <Button
+                            onClick={stopStory}
+                            variant="primary"
+                            style={{ margin: 5 }}
+                        >
+                            Stop Story
+                        </Button>
+                    )}
                 </div>
             </div>
             <div>
