@@ -70,11 +70,18 @@
 
 /* CUSTOM FEED */
 
-.chat-feed {
-  height: 100%; /*100%*/
-  width: 100%; /*100%*/
-  overflow: scroll;
-  background-color: white;/*rgb(240, 240, 240);*/
+#chat-feed {
+  height: 400px;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+#header {
+  top: 10px;
 }
 
 .chat-title-container {
