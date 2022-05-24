@@ -30,9 +30,10 @@ const App = () => {
             <div
                 style={{
                     position: "fixed",
-                    top: "60px",
+                    top: "8%",
                     width: "100%",
-                    height: "calc(100% - 200px)",
+                    height: "39%",
+                    overflowY: "auto"
                 }}
             >
                 {" "}
