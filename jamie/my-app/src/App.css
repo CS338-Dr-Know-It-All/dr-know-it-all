@@ -71,7 +71,9 @@
 /* CUSTOM FEED */
 
 #chat-feed {
-  height: 400px;
+  position: fixed;
+  top: 40%;
+  height: 50%;
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
