@@ -1,4 +1,5 @@
 import json
+import os
 
 from flask import Flask, Response, request
 from flask_cors import CORS
@@ -10,16 +11,28 @@ CORS(app)
 
 print("\nLoading models...")
 
-joetokenizer = AutoTokenizer.from_pretrained("huggingtweets/joebiden")
-joemodel = AutoModelForCausalLM.from_pretrained("huggingtweets/joebiden")
-donaldtokenizer = AutoTokenizer.from_pretrained("huggingtweets/realdonaldtrump")
-donaldmodel = AutoModelForCausalLM.from_pretrained("huggingtweets/realdonaldtrump")
-elontokenizer = AutoTokenizer.from_pretrained("huggingtweets/elonmusk")
-elonmodel = AutoModelForCausalLM.from_pretrained("huggingtweets/elonmusk")
-shakespearetokenizer = AutoTokenizer.from_pretrained("huggingtweets/wwm_shakespeare")
-shakespearemodel = AutoModelForCausalLM.from_pretrained("huggingtweets/wwm_shakespeare")
-buddhatokenizer = AutoTokenizer.from_pretrained("huggingtweets/_buddha_quotes")
-buddhamodel = AutoModelForCausalLM.from_pretrained("huggingtweets/_buddha_quotes")
+if os.path.exists("./models"):
+    joetokenizer = "./models/joebiden"
+    joemodel = "./models/joebiden"
+    donaldtokenizer = "./models/realdonaldtrump"
+    donaldmodel = "./models/realdonaldtrump"
+    elontokenizer = "./models/elonmusk"
+    elonmodel = "./models/elonmusk"
+    shakespearetokenizer = "./models/wwm_shakespeare"
+    shakespearemodel = "./models/wwm_shakespeare"
+    buddhatokenizer = "./models/_buddha_quotes"
+    buddhamodel = "./models/_buddha_quotes"
+else:
+    joetokenizer = AutoTokenizer.from_pretrained("huggingtweets/joebiden")
+    joemodel = AutoModelForCausalLM.from_pretrained("huggingtweets/joebiden")
+    donaldtokenizer = AutoTokenizer.from_pretrained("huggingtweets/realdonaldtrump")
+    donaldmodel = AutoModelForCausalLM.from_pretrained("huggingtweets/realdonaldtrump")
+    elontokenizer = AutoTokenizer.from_pretrained("huggingtweets/elonmusk")
+    elonmodel = AutoModelForCausalLM.from_pretrained("huggingtweets/elonmusk")
+    shakespearetokenizer = AutoTokenizer.from_pretrained("huggingtweets/wwm_shakespeare")
+    shakespearemodel = AutoModelForCausalLM.from_pretrained("huggingtweets/wwm_shakespeare")
+    buddhatokenizer = AutoTokenizer.from_pretrained("huggingtweets/_buddha_quotes")
+    buddhamodel = AutoModelForCausalLM.from_pretrained("huggingtweets/_buddha_quotes")
 
 print("Models loaded.\n")
 
@@ -32,7 +45,7 @@ people = {
 }
 
 
-@app.post("/generate")
+@app.route("/generate", methods=["POST"])
 def hello_world():
     body = request.json
     prompt = body.get("prompt")

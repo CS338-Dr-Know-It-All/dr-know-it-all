@@ -3,6 +3,9 @@
 # Virtual Environment
 env/
 
+# Models
+models/
+
 # Python / Notebooks
 .ipynb_checkpoints
 
