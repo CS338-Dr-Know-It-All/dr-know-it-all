@@ -1,18 +1,19 @@
-import { useEffect, useRef } from "react";
-import Message from "./Message.jsx";
-import MyMessage from "./MyMessage.jsx";
+import React, { useState, useEffect, useRef } from "react";
+import CharacterList from "./CharacterList";
+import Message from "./Message";
+import MyMessage from "./MyMessage";
 
 import { Button } from "react-bootstrap";
 
-const Feed = ({
-    prompt,
-    setPrompt,
-    messages,
-    setMessages,
-    inProgress,
-    setInProgress,
-}) => {
-    const users = ["donald", "elon", "joe", "shakespeare", "buddha"];
+const Feed = ({ feedDict, setFeedDict, inProgress, setInProgress }) => {
+    const { prompt, messages } = feedDict;
+    const [characters, setCharacters] = useState([
+        "donald",
+        "elon",
+        "joe",
+        "shakespeare",
+        "buddha",
+    ]);
     let index = useRef(0);
 
     useEffect(() => {
@@ -26,7 +27,7 @@ const Feed = ({
                 mode: "cors",
                 body: JSON.stringify({
                     prompt,
-                    person: users[index.current],
+                    person: characters[index.current],
                 }),
             });
             const data = await res.json();
@@ -39,16 +40,19 @@ const Feed = ({
                 return;
             }
 
-            setPrompt(text);
-            setMessages([
-                ...messages,
-                { person: users[index.current], word: newWord },
-            ]);
+            setFeedDict({
+                prompt: text,
+                messages: [
+                    ...messages,
+                    { person: characters[index.current], word: newWord },
+                ],
+            });
             index.current = index.current < 4 ? index.current + 1 : 0;
         })();
     }, [prompt, inProgress]);
 
     const beginStory = async () => {
+        index.current = 0; // reset to beginning
         setInProgress(true);
     };
 
@@ -59,6 +63,20 @@ const Feed = ({
     return (
         <div id="body">
             <nav id="header">
+                <CharacterList
+                    characters={characters}
+                    setCharacters={setCharacters}
+                    inProgress={inProgress}
+                />
+                <div
+                    style={{
+                        marginTop: 20,
+                        fontWeight: "bold",
+                        textAlign: "center",
+                    }}
+                >
+                    Prompt:
+                </div>
                 <div className="prompt" style={{ textAlign: "center" }}>
                     {prompt}
                 </div>
@@ -83,21 +101,21 @@ const Feed = ({
                 </div>
             </nav>
             <div id="chat-feed">
-                {messages.map(({ person, word }) => (
-                     <div className="individual-message-container">
-                     {person !== "me" ? (
-                         <Message
-                             person={person}
-                             word={word}
-                             className="message"
-                         />
-                     ) : (
-                         <MyMessage
-                             person={person}
-                             word={word}
-                             className="message"
-                         />
-                     )}
+                {messages.map(({ person, word }, index) => (
+                    <div className="individual-message-container" key={index}>
+                        {person !== "me" ? (
+                            <Message
+                                person={person}
+                                word={word}
+                                className="message"
+                            />
+                        ) : (
+                            <MyMessage
+                                person={person}
+                                word={word}
+                                className="message"
+                            />
+                        )}
                     </div>
                 ))}
             </div>

@@ -1,3 +1,4 @@
+import React from "react";
 import { Card } from "react-bootstrap";
 
 const MyMessage = ({ person, word }) => {
@@ -9,7 +10,7 @@ const MyMessage = ({ person, word }) => {
                     color: "white",
                     backgroundColor: "#3B2A50",
                     float: "right",
-                    marginRight: "18px"
+                    marginRight: "18px",
                 }}
             >
                 {word}

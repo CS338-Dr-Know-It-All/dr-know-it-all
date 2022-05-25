@@ -1,13 +1,15 @@
 //import logo from './logo.svg';
 import "./App.css";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Container, Form } from "react-bootstrap";
 import Feed from "./components/Feed";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const App = () => {
-    const [messages, setMessages] = useState([]);
-    const [prompt, setPrompt] = useState("Tell me a funny story.");
+    const [feedDict, setFeedDict] = useState({
+        prompt: "Tell me a funny story.",
+        messages: [],
+    });
     const [placeHolder, setPlaceHolder] = useState("");
     const [inProgress, setInProgress] = useState(false);
 
@@ -17,8 +19,13 @@ const App = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setPrompt(placeHolder);
-        setMessages([...messages, { person: "me", word: placeHolder }]);
+        setFeedDict({
+            prompt: placeHolder,
+            messages: [
+                ...feedDict.messages,
+                { person: "me", word: placeHolder },
+            ],
+        });
         setPlaceHolder("");
     };
 
@@ -33,15 +40,13 @@ const App = () => {
                     top: "8%",
                     width: "100%",
                     height: "39%",
-                    overflowY: "auto"
+                    overflowY: "auto",
                 }}
             >
                 {" "}
                 <Feed
-                    prompt={prompt}
-                    setPrompt={setPrompt}
-                    messages={messages}
-                    setMessages={setMessages}
+                    feedDict={feedDict}
+                    setFeedDict={setFeedDict}
                     inProgress={inProgress}
                     setInProgress={setInProgress}
                 />{" "}
