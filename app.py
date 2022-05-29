@@ -4,6 +4,7 @@ from flask import Flask, Response, request
 from flask_cors import CORS
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers import pipeline
+import random
 
 app = Flask(__name__)
 CORS(app)
@@ -32,6 +33,10 @@ people = {
 }
 
 
+names = ["Diya", "Marcela", "Lorenzo", "Charles", "Max", "Sally", "George", "Kumar", 
+        "Andrew", "Noel", "Kaitlyn", "Camila", "Rachel", "Evan", "Lenny", "Jose", "Raquel"] 
+
+
 @app.post("/generate")
 def hello_world():
     body = request.json
@@ -55,15 +60,32 @@ def hello_world():
     longest_response = max(texts, key=lambda text: len(text['generated_text']))['generated_text']
     generated_text = longest_response.split(prompt, 1)  # begins with '' (empty string), then new text
 
-    if len(generated_text) > 1:  # if there is newly generated text
+    if not (generated_text[0] == '' and generated_text[1] == ''):  # if there is newly generated text
         new_words = generated_text[1].split(' ')
-        if len(new_words) > 1 and new_words[0] == '' or new_words[0] == '\n':
-            prompt = prompt + ' ' + new_words[1]  # actual word
+        print(generated_text)
+        if len(new_words) > 1 and (new_words[0] == '' or new_words[0] == '\n'):
+            if new_words[1][0] == "@":
+                print("ITS AN ATTTTT")
+                print(new_words)
+                w_index = random.randint(0,len(names))
+                word = names[w_index]
+            else:
+                word = new_words[1]
+            prompt = prompt + ' ' + word  # actual word
         elif new_words[0] != '' and new_words[0] != '\n':
-            prompt = prompt + new_words[0]  # punctuation
+            if new_words[0][0] == "@":
+                print("ITS AN ATTTTT")
+                print(new_words)
+                w_index = random.randint(0,len(names))
+                word = names[w_index]
+            else:
+                word = new_words[0]
+            prompt = prompt + word  # punctuation
 
     else:  # re-generate text based on last word
+        print("IN HEREEE")
         last_word = prompt.split(' ')[-1]
+        print(prompt.split(' '))
         texts = generator(last_word, num_return_sequences=5)
         longest_response = max(texts, key=lambda text: len(text['generated_text']))['generated_text']
         generated_text = longest_response.split(last_word, 1)  # begins with '' (empty string), then new text
@@ -82,3 +104,4 @@ def hello_world():
 # enables flask app to run using "python3 app.py"
 if __name__ == '__main__':
     app.run(debug=True)
+
