@@ -72,8 +72,8 @@
 
 #chat-feed {
   position: fixed;
-  top: 40%;
-  height: 50%;
+  top: 50%;
+  height: 40%;
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
