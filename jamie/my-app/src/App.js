@@ -60,7 +60,7 @@ const App = () => {
                             value={placeHolder}
                             onChange={handleChange}
                             onSubmit={handleSubmit}
-                            placeholder="Type messsage here"
+                            placeholder="Type message here"
                             disabled={inProgress}
                         />
                     </Form>
