@@ -33,7 +33,7 @@ people = {
 }
 
 
-names = ["Diya", "Marcela", "Lorenzo", "Charles", "Max", "Sally", "George", "Kumar",
+names = ["Diya", "Marcela", "Lorenzo", "Charles", "Sally", "George", "Kumar",
          "Andrew", "Noel", "Kaitlyn", "Camila", "Rachel", "Evan", "Lenny", "Jose", "Raquel"]
 
 

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card } from "react-bootstrap";
 
 const Message = (props) => {
-    var headshotDict = {
+    const headshotDict = {
         donald: "https://www.politico.com/interactives/uploads/image-service/2019/09/trump.png",
         joe: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWBLa7Fu80Vpqts9GQBEwRybgV9G_YfnDvdw&usqp=CAU",
         elon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFNagohyR6WUNJ0tw7oRFxPDeXztYsQISr5g&usqp=CAU",
@@ -10,6 +10,15 @@ const Message = (props) => {
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg3PLHmsdbAlAeERzQCKPsxqfS8tCnCuHsgA&usqp=CAU",
         buddha: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5ClvHKjBY0r97MLA52zZcH6HdgSS112uNww&usqp=CAU",
     };
+
+    useEffect(() => {
+        if (props.audioEnabled && props.word) {
+            props.speak({
+                text: props.word,
+                voice: props.voiceDict[props.person],
+            });
+        }
+    }, [props.word]);
 
     return (
         <div className="message-row">
