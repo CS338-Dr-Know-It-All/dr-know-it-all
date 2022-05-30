@@ -32,7 +32,7 @@ const App = () => {
     return (
         <div style={{ height: "100vh", position: "relative" }}>
             <div className="chat-title-container">
-                <h1 className="chat-title">Dr Know It All </h1>
+                <h1 className="chat-title">Dr. Know-It-All</h1>
             </div>
             <div
                 style={{
