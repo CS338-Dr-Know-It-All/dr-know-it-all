@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card } from "react-bootstrap";
 
-const MyMessage = ({ person, word }) => {
+const MyMessage = ({ audioEnabled, speak, word }) => {
+    useEffect(() => {
+        if (audioEnabled && word) {
+            speak({ text: word });
+        }
+    }, [word]);
+
     return (
         <div className="message-block">
             <Card

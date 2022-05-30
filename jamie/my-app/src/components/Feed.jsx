@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useSpeechSynthesis } from "react-speech-kit";
+import { VolumeMuteFill, VolumeUpFill } from "react-bootstrap-icons";
 import CharacterList from "./CharacterList";
 import Message from "./Message";
 import MyMessage from "./MyMessage";
-
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 
 const Feed = ({ feedDict, setFeedDict, inProgress, setInProgress }) => {
     const { prompt, messages } = feedDict;
@@ -15,6 +16,8 @@ const Feed = ({ feedDict, setFeedDict, inProgress, setInProgress }) => {
         "buddha",
     ]);
     let index = useRef(0);
+    const [audioEnabled, setAudioEnabled] = useState(false);
+    const { speak, speaking, cancel, voices } = useSpeechSynthesis();
 
     useEffect(() => {
         if (!inProgress || !prompt) {
@@ -60,6 +63,13 @@ const Feed = ({ feedDict, setFeedDict, inProgress, setInProgress }) => {
         setInProgress(false);
     };
 
+    const toggleVoice = () => {
+        if (audioEnabled && speaking) {
+            cancel();
+        }
+        setAudioEnabled(!audioEnabled);
+    };
+
     return (
         <div id="body">
             <nav id="header">
@@ -100,18 +110,37 @@ const Feed = ({ feedDict, setFeedDict, inProgress, setInProgress }) => {
                     )}
                 </div>
             </nav>
+            <Container>
+                <Button
+                    active={false}
+                    onClick={toggleVoice}
+                    variant="link"
+                    style={{ color: "rgb(80,80,80)" }}
+                >
+                    {audioEnabled ? "Voices On" : "Voices Off"}
+                    {audioEnabled ? (
+                        <VolumeUpFill size={20} style={{ marginLeft: 5 }} />
+                    ) : (
+                        <VolumeMuteFill size={20} style={{ marginLeft: 5 }} />
+                    )}
+                </Button>
+            </Container>
+
             <div id="chat-feed">
                 {messages.map(({ person, word }, index) => (
                     <div className="individual-message-container" key={index}>
                         {person !== "me" ? (
                             <Message
+                                audioEnabled={audioEnabled}
+                                speak={speak}
                                 person={person}
                                 word={word}
                                 className="message"
                             />
                         ) : (
                             <MyMessage
-                                person={person}
+                                audioEnabled={audioEnabled}
+                                speak={speak}
                                 word={word}
                                 className="message"
                             />
