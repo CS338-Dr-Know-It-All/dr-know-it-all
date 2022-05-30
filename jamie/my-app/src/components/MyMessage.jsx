@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Card } from "react-bootstrap";
 
-const MyMessage = ({ audioEnabled, speak, word }) => {
+const MyMessage = ({ audioEnabled, speak, word, voice }) => {
     useEffect(() => {
         if (audioEnabled && word) {
-            speak({ text: word });
+            speak({ text: word, voice });
         }
     }, [word]);
 

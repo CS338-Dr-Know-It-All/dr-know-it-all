@@ -17,7 +17,23 @@ const Feed = ({ feedDict, setFeedDict, inProgress, setInProgress }) => {
     ]);
     let index = useRef(0);
     const [audioEnabled, setAudioEnabled] = useState(false);
-    const { speak, speaking, cancel, voices } = useSpeechSynthesis();
+    let { speak, speaking, cancel, voices } = useSpeechSynthesis();
+    voices = voices.filter(
+        (voice) =>
+            voice.lang.startsWith("en") && !voice.voiceURI.startsWith("Google")
+    );
+    const [voiceDict, setVoiceDict] = useState({});
+
+    useEffect(() => {
+        setVoiceDict({
+            donald: voices[Math.floor(Math.random() * voices.length)],
+            elon: voices[Math.floor(Math.random() * voices.length)],
+            joe: voices[Math.floor(Math.random() * voices.length)],
+            shakespeare: voices[Math.floor(Math.random() * voices.length)],
+            buddha: voices[Math.floor(Math.random() * voices.length)],
+            me: voices[Math.floor(Math.random() * voices.length)],
+        });
+    }, [audioEnabled]);
 
     useEffect(() => {
         if (!inProgress || !prompt) {
@@ -135,6 +151,7 @@ const Feed = ({ feedDict, setFeedDict, inProgress, setInProgress }) => {
                                 speak={speak}
                                 person={person}
                                 word={word}
+                                voiceDict={voiceDict}
                                 className="message"
                             />
                         ) : (
@@ -142,6 +159,7 @@ const Feed = ({ feedDict, setFeedDict, inProgress, setInProgress }) => {
                                 audioEnabled={audioEnabled}
                                 speak={speak}
                                 word={word}
+                                voice={voiceDict.me}
                                 className="message"
                             />
                         )}

@@ -13,7 +13,10 @@ const Message = (props) => {
 
     useEffect(() => {
         if (props.audioEnabled && props.word) {
-            props.speak({ text: props.word });
+            props.speak({
+                text: props.word,
+                voice: props.voiceDict[props.person],
+            });
         }
     }, [props.word]);
 
