@@ -16,6 +16,7 @@ const Feed = ({ feedDict, setFeedDict, inProgress, setInProgress }) => {
         "buddha",
     ]);
     let index = useRef(0);
+    const chatFeedRef = useRef(null);
     const [audioEnabled, setAudioEnabled] = useState(false);
     let { speak, speaking, cancel, voices } = useSpeechSynthesis();
     voices = voices.filter(
@@ -34,6 +35,12 @@ const Feed = ({ feedDict, setFeedDict, inProgress, setInProgress }) => {
             me: voices[Math.floor(Math.random() * voices.length)],
         });
     }, [audioEnabled]);
+
+    useEffect(() => {
+        console.log("SCROLL");
+        console.log(chatFeedRef.current);
+        chatFeedRef.current.scrollTop = chatFeedRef.current.scrollHeight;
+    }, [messages]);
 
     useEffect(() => {
         if (!inProgress || !prompt) {
@@ -142,7 +149,7 @@ const Feed = ({ feedDict, setFeedDict, inProgress, setInProgress }) => {
                 </Button>
             </Container>
 
-            <div id="chat-feed">
+            <div id="chat-feed" ref={chatFeedRef}>
                 {messages.map(({ person, word }, index) => (
                     <div className="individual-message-container" key={index}>
                         {person !== "me" ? (
