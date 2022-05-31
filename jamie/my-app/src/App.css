@@ -71,7 +71,9 @@
 /* CUSTOM FEED */
 
 #chat-feed {
-  height: 400px;
+  position: fixed;
+  top: 50%;
+  height: 40%;
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -233,7 +235,7 @@
 
 .prompt {
   position: relative;
-  padding: 18px;
+  padding: 10px;
 }
 
 /* FORM STYLES */
